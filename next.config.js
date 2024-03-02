@@ -9,16 +9,5 @@ module.exports = {
                 pathname: "/system/files/imagecache/profile_reg/courselogos/*",
             }
         ]
-    },
-    redirects: async () => [
-        {
-            source: "/app",
-            destination: "/",
-            missing: [
-                { type: "cookie", key: "nonce" },
-                { type: "cookie", key: "key" }
-            ],
-            permanent: false
-        }
-    ]
+    }
 }
