@@ -14,10 +14,7 @@ export const Refresh = ({ loading = false }: { loading?: boolean }) => {
     const rtf = new Intl.RelativeTimeFormat("en-US", { numeric: "auto" })
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            setTime(Date.now())
-            console.log(time)
-        }, 1000)
+        const interval = setInterval(() => setTime(Date.now()), 1000)
         return () => clearInterval(interval)
     }, [time])
 

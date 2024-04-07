@@ -11,7 +11,11 @@ const data = async () => {
         method: "POST",
         cache: "no-store",
         headers: { Cookie: cookies().toString() }
-    }).then(res => res.ok ? res.json() : redirect("/"))
+    }).then(res => {
+        if (res.ok) return res.json()
+        console.log(res)
+        return []
+    })
 }
 
 export default async () => {
