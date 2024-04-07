@@ -15,7 +15,7 @@ export default () => {
         fetch(`${process.env.NODE_ENV === "production" ? "https://gradar.tttm.us" : "http://localhost:3000"}/grades`, {
             method: "POST",
             headers: { Cookie: document.cookie }
-        }).then(res => res.ok ? res.json() : []).then(setData)
+        }).then(res => res.ok ? res.json() : window.location.href = "/").then(setData)
     }, [])
 
     return (
