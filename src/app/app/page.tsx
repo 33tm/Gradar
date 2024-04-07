@@ -1,5 +1,5 @@
 import { cookies } from "next/headers"
-// import { redirect } from "next/navigation"
+import { redirect } from "next/navigation"
 
 import { App } from "@/app/app/app"
 import { Toggle } from "@/components/toggle"
@@ -11,11 +11,7 @@ const data = async () => {
         method: "POST",
         cache: "no-store",
         headers: { Cookie: cookies().toString() }
-    }).then(res => {
-        if (res.ok) return res.json()
-        console.log(res)
-        return []
-    })
+    }).then(res => res.ok ? res.json() : redirect("/"))
 }
 
 export default async () => {

@@ -17,5 +17,5 @@ export const oauth = async (subdomain: string) => {
     cookies().set("nonce", nonce, { path: "/", expires: Date.now() + 10 * 60 * 1000, httpOnly: true, secure: true, sameSite: "strict" })
     cookies().set("key", key, { path: "/", expires: Date.now() + 10 * 60 * 1000, httpOnly: true, secure: true, sameSite: "strict" })
 
-    redirect(`https://${subdomain}.schoology.com/oauth/authorize?oauth_token=${key}&oauth_callback=gradar.tttm.us/app`)
+    redirect(`https://${subdomain}.schoology.com/oauth/authorize?oauth_token=${key}&oauth_callback=${process.env.NODE_ENV === "production" ? "gradar.tttm.us/app" : "tttm.us/callback/app"}`)
 }
