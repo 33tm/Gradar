@@ -1,20 +1,23 @@
-import { cookies } from "next/headers"
-import { redirect } from "next/navigation"
+"use client"
+
+import Image from "next/image"
+import { useState, useEffect } from "react"
 
 import { App } from "@/app/app/app"
 import { Toggle } from "@/components/toggle"
 import { Refresh } from "@/components/refresh"
 import { Separator } from "@/components/ui/separator"
 
-const data = async () => {
-    return fetch(`${process.env.NODE_ENV === "production" ? "https://gradar.tttm.us" : "http://localhost:3000"}/grades`, {
-        method: "POST",
-        cache: "no-store",
-        headers: { Cookie: cookies().toString() }
-    }).then(res => res.ok ? res.json() : redirect("/"))
-}
+export default () => {
+    const [data, setData] = useState()
 
-export default async () => {
+    useEffect(() => {
+        fetch(`${process.env.NODE_ENV === "production" ? "https://gradar.tttm.us" : "http://localhost:3000"}/grades`, {
+            method: "POST",
+            headers: { Cookie: document.cookie }
+        }).then(res => res.ok ? res.json() : []).then(setData)
+    }, [])
+
     return (
         <div className="h-screen">
             <div className="sticky top-0 z-20 bg-background">
@@ -23,11 +26,25 @@ export default async () => {
                         <h1 className="font-bold text-3xl p-4">Gradar</h1>
                         <Toggle />
                     </div>
-                    <Refresh />
+                    <Refresh loading={!data} />
                 </div>
                 <Separator />
             </div>
-            <App data={await data()} />
+            {data ? <App data={data} /> : (
+                <>
+                    <Separator />
+                    <div className="flex h-[calc(100vh-69px)]">
+                        <Image
+                            priority
+                            src="/loading.gif"
+                            alt="loading"
+                            width="150"
+                            height="150"
+                            className="m-auto invert dark:invert-0"
+                        />
+                    </div>
+                </>
+            )}
         </div>
     )
 }
